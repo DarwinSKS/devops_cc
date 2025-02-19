@@ -1,0 +1,32 @@
+name: Deploiment automatique sur Netlify
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Vérification du dépôt
+        uses: actions/checkout@v3
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Installation des dépendances
+        run: npm install
+
+      - name: Construction du projet
+        run: npm run build
+
+      - name: Déploiement sur Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
