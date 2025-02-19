@@ -1,0 +1,28 @@
+name: Workflow test unitaire
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code pour exécuter les tests
+        uses: actions/checkout@v3
+      
+      - name: Configuration Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Installation des dépendances
+        run: npm install
+      
+      - name: Exécution des tests
+        run: npm test
